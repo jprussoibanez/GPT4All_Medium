@@ -1,3 +1,4 @@
+# %%
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import GPT4All
 from langchain.callbacks.base import CallbackManager
@@ -18,7 +19,7 @@ from langchain.embeddings import LlamaCppEmbeddings
 from langchain.vectorstores.faiss import FAISS
 import os  #for interaaction with the files
 import datetime
-
+from langchain.embeddings import HuggingFaceEmbeddings
 
 
 # assign the path for the 2 models GPT4All and Alpaca for the embeddings 
@@ -28,7 +29,8 @@ llama_path = './models/ggml-model-q4_0.bin'
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
 # create the embedding object
-embeddings = LlamaCppEmbeddings(model_path=llama_path)
+# embeddings = LlamaCppEmbeddings(model_path=llama_path)
+embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
 # create the GPT4All llm object
 llm = GPT4All(model=gpt4all_path, callback_manager=callback_manager, verbose=True)
 
@@ -89,3 +91,5 @@ llm_chain = LLMChain(prompt=prompt, llm=llm)
 # Print the result
 print(llm_chain.run(question))
 
+
+# %%
